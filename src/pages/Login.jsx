@@ -1,11 +1,12 @@
-import React from 'react'
-import { Auth } from '@supabase/auth-ui-react'
-import { ThemeSupa } from '@supabase/auth-ui-shared'
-import { supabase } from '../supabaseClient';
-import { Routes, Route, Link } from 'react-router-dom';
-import { useState, useEffect } from 'react'
+import React from 'react';
+import { useEffect, useState } from "react";
+import { supabase } from "../supabaseClient";
+import { Auth } from '@supabase/auth-ui-react';
+import { ThemeSupa } from '@supabase/auth-ui-shared';
+import { Link } from 'react-router-dom';
 
-function Login() {
+function Inicio() {
+
     const [session, setSession] = useState(null)
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
@@ -28,18 +29,21 @@ function Login() {
     }
     else {
         return (
-            <>
-                <div className="flex gap-10 p-4 w- rounded-xl shadow-md border border-gray-200 bg-white text-center">
-                    <Link to="/Home"><button className="text-2xl font-bold text-rose-500 hover:text-rose-600 transition">Music</button></Link>
-                    <img className='w-12 h-12 rounded-full object-cover' src={session.user.user_metadata?.avatar_url} alt="" />
+
+            <div className='bg-[#121212] p-6 rounded-xl shadow-lg max-w-md mx-auto border border-gray-800 text-emerald-400 flex flex-col h-40 items-center justify-center gap-2.5 mt-60'>
+                <div>
+                    <h1 className='text-2xl'>Bienvenidos {session?.user.user_metadata?.name}</h1>
                 </div>
-                <div className=''>
-                    <h2>{session?.user?.email}</h2>
-                    <button onClick={signOut}>Cerrar sesion</button>
+
+                <div>
+                    <Link to={'/Home'}> <button className='bg-amber-50 w-32 h-[30px] rounded-[10px] cursor-pointer'>Ingresar</button> </Link>
+                    <button className='bg-amber-50 w-32 h-[30px] rounded-[10px] cursor-pointer' onClick={signOut}>Salir</button>
+                    <Link to={'/Login'}> <button></button> </Link>
                 </div>
-            </>
+
+
+            </div>
         )
     }
 }
-
-export default Login
+export default Inicio

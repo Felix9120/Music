@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { supabase } from '../supabaseClient';
 
 export default function UploadSong({ onSongUploaded }) {
@@ -7,9 +7,25 @@ export default function UploadSong({ onSongUploaded }) {
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
+    const [session, setSession] = useState(null);
+
+    // ✅ Obtener la sesión actual al cargar el componente
+    useEffect(() => {
+        const getSession = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            setSession(session);
+        };
+        getSession();
+    }, []);
 
     const handleUpload = async (e) => {
         e.preventDefault();
+
+        // ✅ Verificar si es el administrador antes de continuar
+        if (session?.user?.email !== "felix.alfonso0991@gmail.com") {
+            setMessage("❌ No tienes permiso para subir música");
+            return;
+        }
 
         if (!title || !artist || !file) {
             setMessage("⚠️ Por favor completa todos los campos");
@@ -41,12 +57,11 @@ export default function UploadSong({ onSongUploaded }) {
 
             if (dbError) throw dbError;
 
-            // Llamar callback opcional
             if (onSongUploaded) {
                 onSongUploaded({ title, artist, file_url: fileUrl });
             }
 
-            // 🔹 Nuevo: notificar a Biblioteca para que recargue la lista
+            // Notificar a Biblioteca para que recargue la lista
             window.dispatchEvent(new Event('song-uploaded'));
 
             setMessage("✅ Canción subida correctamente");
@@ -59,6 +74,15 @@ export default function UploadSong({ onSongUploaded }) {
             setLoading(false);
         }
     };
+
+    // ✅ Si no es el admin, no mostramos el formulario
+    if (session && session.user?.email !== "felix.alfonso0991@gmail.com") {
+        return (
+            <div className="bg-[#121212] p-6 rounded-xl shadow-lg max-w-md mx-auto border border-gray-800">
+                <p className="text-red-500 font-semibold">No tienes permiso para subir música</p>
+            </div>
+        );
+    }
 
     return (
         <div className="bg-[#121212] p-6 rounded-xl shadow-lg max-w-md mx-auto border border-gray-800">

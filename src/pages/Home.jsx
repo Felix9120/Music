@@ -24,25 +24,24 @@ function Home() {
     };
 
     return (
-        <div className='bg-black min-h-screen'>
+        <div className='bg-black flex flex-col md:bg-black min-h-screen'>
             <Sidebar />
-            <div className="flex bg-black text-white p-2.5 mb-5">
+            <div className="md:flex bg-black text-white p-2.5 mb-5">
                 <div className='flex flex-col'>
                     <Biblioteca songs={songs} />
                 </div>
-                <div className='flex-1 flex flex-col ml-1.5'>
+                <div className='md:flex-1 flex flex-col ml-1.5'>
                     <div className='flex-1'>
+                        <div className='mt-2.5'>
+                            <UploadSong onSongUploaded={handleSongUploaded} />
+                        </div>
                         <Playlist />
-                        <UploadSong onSongUploaded={handleSongUploaded} />
 
                     </div>
                 </div>
             </div>
-
-
             <MiniPlayer />
         </div>
     );
 }
-
 export default Home;

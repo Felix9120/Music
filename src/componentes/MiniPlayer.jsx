@@ -159,6 +159,7 @@ export default function MiniPlayer() {
                     step="0.01"
                     value={volume}
                     onChange={handleVolumeChange}
+                    className="accent-green-500"
                 />
             </div>
 
