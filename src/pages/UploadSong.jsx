@@ -21,11 +21,7 @@ export default function UploadSong({ onSongUploaded }) {
     const handleUpload = async (e) => {
         e.preventDefault();
 
-        // ✅ Verificar si es el administrador antes de continuar
-        if (session?.user?.email !== "felix.alfonso0991@gmail.com") {
-            setMessage("❌ No tienes permiso para subir música");
-            return;
-        }
+      
 
         if (!title || !artist || !file) {
             setMessage("⚠️ Por favor completa todos los campos");

@@ -18,7 +18,19 @@ function Biblioteca() {
             console.error('Error fetching songs:', error);
             return;
         }
-        setSongs(data || []);
+
+        // 🔹 Si no tienen file_url absoluta, la generamos
+        const songsWithUrls = (data || []).map((song) => {
+            if (song.file_url && !song.file_url.startsWith('http')) {
+                const { data: publicData } = supabase.storage
+                    .from('songs')
+                    .getPublicUrl(song.file_url);
+                return { ...song, file_url: publicData.publicUrl };
+            }
+            return song;
+        });
+
+        setSongs(songsWithUrls);
     };
 
     useEffect(() => {
