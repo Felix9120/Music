@@ -13,13 +13,15 @@ function Sidebar() {
 
     const clearSearch = () => {
         setSearch('');
+        localStorage.removeItem('searchTerm');
+        window.dispatchEvent(new Event('search-updated'));
     };
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
         if (search.trim()) {
-            console.log('Buscando:', search);
-            // Aquí iría tu lógica para buscar canciones en Supabase o Spotify
+            localStorage.setItem('searchTerm', search);
+            window.dispatchEvent(new Event('search-updated')); // 🔹 avisamos a Playlist
         }
     };
 
@@ -27,13 +29,12 @@ function Sidebar() {
         <div className="text-white rounded-[10px] w-full flex-col justify-between p-5 bg-black relative">
             <div className='flex gap-2.5 items-center'>
 
-                <div className='w-[80px] h-[80px]  flex items-center justify-center cursor-pointer'>   
-                     <img src={Logo} alt="" />
-                </div>           
+                <div className='w-[80px] h-[80px] flex items-center justify-center cursor-pointer'>
+                    <img src={Logo} alt="" />
+                </div>
 
-
-                <div className='bg-[#191919] w-[50px] h-[50px] rounded-[10px] flex items-center justify-center cursor-pointer'>         
-                   <Link to={'/Home'}>
+                <div className='bg-[#191919] w-[50px] h-[50px] rounded-[10px] flex items-center justify-center cursor-pointer'>
+                    <Link to={'/Home'}>
                         <img src={Home} alt="Home" />
                     </Link>
                 </div>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../supabaseClient'; // 👈 Importar conexión
 
 function Playlist() {
     const [songs, setSongs] = useState([]);
@@ -13,19 +12,8 @@ function Playlist() {
         setTitle(storedTitle);
     };
 
-    // 🔹 Nueva función para cargar canciones desde Supabase
-    const loadSongsFromSupabase = async () => {
-        const { data, error } = await supabase.from('songs').select('*');
-        if (error) {
-            console.error('Error cargando canciones de Supabase:', error);
-        } else {
-            setSongs(data);
-            setTitle('Canciones subidas');
-        }
-    };
-
     useEffect(() => {
-        // Limpiar playlist al recargar
+        // 🔹 Limpiar playlist al recargar
         localStorage.removeItem('selectedPlaylist');
         localStorage.removeItem('playlistTitle');
         setSongs([]);
@@ -38,9 +26,6 @@ function Playlist() {
         const checkMobile = () => setIsMobile(window.innerWidth <= 768);
         checkMobile();
         window.addEventListener('resize', checkMobile);
-
-        // 👇 Si no hay playlist seleccionada, cargar canciones de Supabase
-        loadSongsFromSupabase();
 
         return () => {
             window.removeEventListener('playlist-selected', loadPlaylist);
