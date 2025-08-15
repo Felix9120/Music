@@ -83,7 +83,13 @@ function Biblioteca() {
             </div>
 
             {/* Vista de canciones */}
-            <div className="mt-4 px-5 text-white overflow-y-auto md:h-[420px]">
+            <div
+                className="mt-4 px-5 text-white overflow-y-auto"
+                style={{
+                    height: 'auto',
+                    maxHeight: '420px', // 📏 más pequeño en escritorio
+                }}
+            >
                 {Object.keys(songsByArtist).length === 0 ? (
                     <p className="text-gray-400 text-sm">No hay canciones</p>
                 ) : (
@@ -94,20 +100,32 @@ function Biblioteca() {
                                 <span className="text-xs text-gray-400">{songsByArtist[artist].length} canciones</span>
                             </div>
 
-                            {/* En móviles, carrusel horizontal */}
-                            <div className="mt-2 flex md:block overflow-x-auto md:overflow-x-visible gap-3 md:gap-0 scrollbar-hide">
+                            {/* Carrusel horizontal en móviles */}
+                            <div
+                                className="mt-2 flex md:block overflow-x-auto md:overflow-x-visible gap-3 md:gap-0 scrollbar-hide"
+                                style={{
+                                    scrollSnapType: 'x mandatory',
+                                    WebkitOverflowScrolling: 'touch',
+                                    paddingBottom: '6px'
+                                }}
+                            >
                                 {songsByArtist[artist].map((song) => (
                                     <div
                                         key={song.id}
-                                        className="flex-shrink-0 md:flex-shrink md:w-auto w-40 bg-[#232323] p-2 rounded-lg hover:bg-[#1DB954] transition-colors cursor-pointer"
+                                        className="flex-shrink-0 md:flex-shrink md:w-auto w-32 bg-[#232323] p-2 rounded-lg hover:bg-[#1DB954] transition-colors cursor-pointer"
+                                        style={{
+                                            scrollSnapAlign: 'start',
+                                            minWidth: '8rem',
+                                            maxWidth: '8rem'
+                                        }}
                                         onClick={(e) => handleSongClickPlay(e, artist, song)}
                                     >
-                                        <div className="bg-[#444] w-12 h-12 flex items-center justify-center rounded">
+                                        <div className="bg-[#444] w-10 h-10 flex items-center justify-center rounded">
                                             🎵
                                         </div>
                                         <div className="ml-2">
-                                            <p className="text-sm font-semibold">{song.title}</p>
-                                            <p className="text-xs text-gray-400">{song.artist}</p>
+                                            <p className="text-xs font-semibold truncate">{song.title}</p>
+                                            <p className="text-[10px] text-gray-400 truncate">{song.artist}</p>
                                         </div>
                                     </div>
                                 ))}
