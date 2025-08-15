@@ -45,7 +45,10 @@ function Playlist() {
     return (
         <div
             className={`text-white p-4 bg-[#191919] mt-2.5 rounded-[10px] overflow-auto 
-                ${isMobile ? 'w-full h-auto' : 'w-[900px] h-[400px]'}`}
+                ${isMobile 
+                    ? 'w-full h-[calc(100vh-100px)]' // 🔹 Alto ajustado en móviles
+                    : 'w-[900px] h-[400px]'
+                }`}
         >
             {title && <h2 className="text-lg font-bold mb-4">{title}</h2>}
             {songs.length === 0 ? (
@@ -53,7 +56,7 @@ function Playlist() {
             ) : (
                 <div
                     className={`${isMobile
-                        ? 'flex gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory scroll-smooth'
+                        ? 'flex flex-col gap-3 overflow-y-auto scrollbar-hide' // 🔹 Scroll vertical en móvil
                         : 'flex flex-col'
                         }`}
                 >
@@ -62,7 +65,7 @@ function Playlist() {
                             key={song.id}
                             className={`flex items-center gap-3 bg-[#232323] p-2 rounded-lg 
                                 hover:bg-[#1DB954] transition-colors cursor-pointer 
-                                ${isMobile ? 'min-w-[200px] flex-shrink-0 snap-center' : 'mb-2'}`}
+                                ${isMobile ? '' : 'mb-2'}`}
                             onClick={() => handlePlaySong(index)}
                         >
                             <div className="bg-[#444] w-12 h-12 flex items-center justify-center rounded">

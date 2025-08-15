@@ -10,38 +10,48 @@ function Home() {
     const [songs, setSongs] = useState([]);
 
     useEffect(() => {
-        // Cargar canciones al iniciar
         const fetchSongs = async () => {
-            const { data, error } = await supabase.from('songs').select('*').order('id', { ascending: false });
+            const { data, error } = await supabase
+                .from('songs')
+                .select('*')
+                .order('id', { ascending: false });
             if (!error) setSongs(data);
         };
         fetchSongs();
     }, []);
 
     const handleSongUploaded = (newSong) => {
-        // Agrega la nueva canción arriba para mostrar sin recargar
         setSongs(prevSongs => [newSong, ...prevSongs]);
     };
 
     return (
-        <div className='bg-black flex flex-col md:bg-black min-h-screen'>
+        <div className="bg-black flex flex-col min-h-screen">
+            {/* Sidebar siempre arriba en móvil, lateral en escritorio */}
             <Sidebar />
-            <div className="md:flex bg-black text-white p-2.5 mb-5">
-                <div className='flex flex-col'>
+
+            {/* Contenido principal */}
+            <div className="flex flex-col md:flex-row bg-black text-white p-2.5 mb-5 gap-4">
+                
+                {/* Biblioteca: ancho completo en móvil, fijo en escritorio */}
+                <div className="w-full md:w-[412px]">
                     <Biblioteca songs={songs} />
                 </div>
-                <div className='md:flex-1 flex flex-col ml-1.5'>
-                    <div className='flex-1'>
-                        <div className='mt-2.5'>
-                            <UploadSong onSongUploaded={handleSongUploaded} />
-                        </div>
-                        <Playlist />
 
+                {/* Panel derecho: Upload + Playlist */}
+                <div className="flex-1 flex flex-col w-full">
+                    <div className="mt-2 md:mt-0">
+                        <UploadSong onSongUploaded={handleSongUploaded} />
+                    </div>
+                    <div className="flex-1 mt-4 md:mt-2">
+                        <Playlist />
                     </div>
                 </div>
             </div>
+
+            {/* MiniPlayer siempre visible abajo */}
             <MiniPlayer />
         </div>
     );
 }
+
 export default Home;
