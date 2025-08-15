@@ -99,7 +99,7 @@ function Biblioteca() {
                                 {songsByArtist[artist].map((song) => (
                                     <div
                                         key={song.id}
-                                        className="flex-shrink-0 md:flex-shrink md:w-auto w-40 bg-[#232323] p-2 rounded-lg hover:bg-[#1DB954] transition-colors cursor-pointer "
+                                        className="flex-shrink-0 md:flex-shrink md:w-auto w-40 bg-[#232323] p-2 rounded-lg hover:bg-[#1DB954] transition-colors cursor-pointer"
                                         onClick={(e) => handleSongClickPlay(e, artist, song)}
                                     >
                                         <div className="bg-[#444] w-12 h-12 flex items-center justify-center rounded">
