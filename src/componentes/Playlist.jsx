@@ -4,11 +4,13 @@ function Playlist() {
     const [songs, setSongs] = useState([]);
     const [title, setTitle] = useState('');
     const [isMobile, setIsMobile] = useState(false);
+    const [filteredSongs, setFilteredSongs] = useState([]); // 🔹 añadido
 
     const loadPlaylist = () => {
         const storedSongs = JSON.parse(localStorage.getItem('selectedPlaylist')) || [];
         const storedTitle = localStorage.getItem('playlistTitle') || '';
         setSongs(storedSongs);
+        setFilteredSongs(storedSongs); // 🔹 inicializa filtradas con todas
         setTitle(storedTitle);
     };
 
@@ -17,10 +19,28 @@ function Playlist() {
         localStorage.removeItem('selectedPlaylist');
         localStorage.removeItem('playlistTitle');
         setSongs([]);
+        setFilteredSongs([]); // 🔹 también limpiar filtradas
         setTitle('');
 
         // Escuchar cambios cuando se selecciona un artista
         window.addEventListener('playlist-selected', loadPlaylist);
+
+        // 🔹 Escuchar búsqueda desde Sidebar
+        const handleSearchUpdate = () => {
+            const query = localStorage.getItem('search_query') || '';
+            if (!query.trim()) {
+                setFilteredSongs(songs);
+            } else {
+                setFilteredSongs(
+                    songs.filter(
+                        (song) =>
+                            song.title.toLowerCase().includes(query.toLowerCase()) ||
+                            song.artist.toLowerCase().includes(query.toLowerCase())
+                    )
+                );
+            }
+        };
+        window.addEventListener('search-updated', handleSearchUpdate);
 
         // Detectar si es pantalla móvil
         const checkMobile = () => setIsMobile(window.innerWidth <= 768);
@@ -29,14 +49,15 @@ function Playlist() {
 
         return () => {
             window.removeEventListener('playlist-selected', loadPlaylist);
+            window.removeEventListener('search-updated', handleSearchUpdate); // 🔹 limpieza
             window.removeEventListener('resize', checkMobile);
         };
-    }, []);
+    }, [songs]);
 
     const handlePlaySong = (songIndex) => {
         window.dispatchEvent(new CustomEvent('play-song', {
             detail: {
-                songs: songs,
+                songs: filteredSongs, // 🔹 reproducir las filtradas
                 index: songIndex
             }
         }));
@@ -45,13 +66,13 @@ function Playlist() {
     return (
         <div
             className={`text-white p-4 bg-[#191919] mt-2.5 rounded-[10px] overflow-auto 
-                ${isMobile 
+                ${isMobile
                     ? 'w-full h-[calc(100vh-100px)]' // 🔹 Alto ajustado en móviles
                     : 'w-[900px] h-[400px]'
                 }`}
         >
             {title && <h2 className="text-lg font-bold mb-4">{title}</h2>}
-            {songs.length === 0 ? (
+            {filteredSongs.length === 0 ? (
                 <p>No hay canciones en esta playlist</p>
             ) : (
                 <div
@@ -60,7 +81,7 @@ function Playlist() {
                         : 'flex flex-col'
                         }`}
                 >
-                    {songs.map((song, index) => (
+                    {filteredSongs.map((song, index) => (
                         <div
                             key={song.id}
                             className={`flex items-center gap-3 bg-[#232323] p-2 rounded-lg 
