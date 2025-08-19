@@ -1,27 +1,11 @@
 import React, { useState } from 'react';
 import Home from '../assets/Home_Fill_S.png';
-import Buscar from '../assets/Search_S.png';
+
 import Logo from '../assets/logo.jpeg'
 import { Link } from 'react-router-dom';
 
 function Sidebar() {
-    const [search, setSearch] = useState('');
-
-    const handleSearchChange = (e) => {
-        setSearch(e.target.value);
-    };
-
-    const clearSearch = () => {
-        setSearch('');
-    };
-
-    const handleSearchSubmit = (e) => {
-        e.preventDefault();
-        if (search.trim()) {
-            console.log('Buscando:', search);
-            // Aquí iría tu lógica para buscar canciones en Supabase o Spotify
-        }
-    };
+   
 
     return (
         <div className="text-white rounded-[10px] w-full flex-col justify-between p-5 bg-black relative">
@@ -37,29 +21,7 @@ function Sidebar() {
                         <img src={Home} alt="Home" />
                     </Link>
                 </div>
-
-                <form onSubmit={handleSearchSubmit} className='relative'>
-                    <div className='w-[250px] md:w-[375px] md:flex items-center gap-2 bg-[#232323] px-3 py-1 rounded-2xl'>
-                        <img src={Buscar} alt="" className="w-[18px] h-[18px]" />
-                        <input
-                            type="text"
-                            value={search}
-                            onChange={handleSearchChange}
-                            placeholder="¿Qué quieres reproducir?"
-                            className="bg-transparent outline-none text-white w-full"
-                        />
-                        {search && (
-                            <button
-                                type="button"
-                                onClick={clearSearch}
-                                className="text-white hover:text-red-400 transition"
-                                title="Limpiar búsqueda"
-                            >
-                                ✕
-                            </button>
-                        )}
-                    </div>
-                </form>
+              
             </div>
         </div>
     );
