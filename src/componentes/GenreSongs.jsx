@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { supabase } from "../supabaseClient";
-
 import { ChevronLeft } from "lucide-react";
+import SongList from "./SongList";
 
 function GenreSongs() {
   const { id } = useParams(); // Obtiene el id del género de la URL
@@ -68,7 +68,7 @@ function GenreSongs() {
       </h1>
       
       {songs.length > 0 ? (
-        <SongGrid songs={songs} />
+        <SongList songs={songs} />
       ) : (
         <p className="text-neutral-400 text-center mt-10">No se encontraron canciones para este género.</p>
       )}

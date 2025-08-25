@@ -21,7 +21,7 @@ function SongList() {
         <div
           key={s.id}
           onClick={() => playSong(s, songs)}
-          className="flex items-center justify-between p-2 sm:p-4 hover:bg-emerald-900 rounded cursor-pointer transition-colors"
+          className="flex items-center justify-between p-2 sm: hover:bg-emerald-900 rounded cursor-pointer transition-colors"
         >
           <div className="flex items-center">
             <img
@@ -32,7 +32,7 @@ function SongList() {
             <div>
               <p className="font-bold text-sm sm:text-base">{s.title}</p>
               <p className="text-xs text-gray-400">{s.artist}</p>
-              <p className="text-xs text-gray-400">{s.gener}</p>
+              
             </div>
           </div>
         </div>

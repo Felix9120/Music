@@ -66,7 +66,7 @@ function ArtistSongs() {
       </h1>
       
       {songs.length > 0 ? (
-        <SongGrid songs={songs} />
+        <SongList songs={songs} />
       ) : (
         <p className="text-neutral-400 text-center mt-10">No se encontraron canciones para este artista.</p>
       )}
